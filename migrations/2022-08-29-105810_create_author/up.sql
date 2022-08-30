@@ -1,0 +1,11 @@
+CREATE TABLE authors (
+  id SERIAL NOT NULL PRIMARY KEY,
+  name VARCHAR NOT NULL
+);
+
+ALTER TABLE posts ADD COLUMN author_id INT NOT NULL;
+
+ALTER TABLE posts
+  ADD CONSTRAINT fk_posts_authors
+  FOREIGN KEY (author_id)
+  REFERENCES authors;
