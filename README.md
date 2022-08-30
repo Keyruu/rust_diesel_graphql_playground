@@ -1,0 +1,1 @@
+# rust_diesel_graphql_playground
