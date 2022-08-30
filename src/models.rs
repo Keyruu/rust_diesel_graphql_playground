@@ -7,7 +7,7 @@ use async_graphql::*;
 use diesel::prelude::*;
 use diesel::{Identifiable, QueryDsl, RunQueryDsl};
 
-#[derive(SimpleObject, Queryable, Identifiable)]
+#[derive(SimpleObject, Queryable, Identifiable, Associations)]
 #[diesel(belongs_to(Author))]
 #[graphql(complex)]
 pub struct Post {
@@ -41,9 +41,8 @@ impl Author {
     async fn posts<'ctx>(&self, ctx: &Context<'ctx>) -> Vec<Post> {
         let connection = &mut ctx.data::<Database>().unwrap().pool.get().unwrap();
 
-        postsDsl
-            .filter(author_id.eq(self.id))
+        Post::belonging_to(&self)
             .load(connection)
-            .expect("No posts found")
+            .expect("Error loading photos")
     }
 }
