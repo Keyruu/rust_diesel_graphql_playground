@@ -20,11 +20,8 @@ pub struct Post {
 
 #[ComplexObject]
 impl Post {
-    async fn author<'ctx>(&self, ctx: &Context<'ctx>) -> Author {
-        let connection = &mut ctx.data::<Database>().unwrap().pool.get().unwrap();
-        authorsDsl
-            .find(self.author_id)
-            .first(connection)
-            .expect("No Author found.")
+    async fn author<'ctx>(&self, ctx: &Context<'ctx>) -> Result<Author, Error> {
+        let connection = &mut ctx.data::<Database>()?.pool.get()?;
+        Ok(authorsDsl.find(self.author_id).first(connection)?)
     }
 }

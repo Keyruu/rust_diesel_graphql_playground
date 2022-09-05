@@ -17,13 +17,14 @@ async fn graphql_playground() -> impl IntoResponse {
 async fn main() {
     let connection = get_connection_pool();
 
-    let schema = Schema::build(QueryRoot, EmptyMutation, EmptySubscription)
+    let schema = Schema::build(QueryRoot, MutationRoot, EmptySubscription)
         .data(Database { pool: connection })
         .finish();
 
     let app = Route::new().at("/", get(graphql_playground).post(GraphQL::new(schema)));
 
-    println!("Playground: http://localhost:8000");
+    println!("📝 Writing poem!");
+    println!("🏀 Playground at http://localhost:8000.");
     Server::new(TcpListener::bind("0.0.0.0:8000"))
         .run(app)
         .await
