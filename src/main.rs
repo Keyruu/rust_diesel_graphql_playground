@@ -24,7 +24,7 @@ async fn main() {
     let app = Route::new().at("/", get(graphql_playground).post(GraphQL::new(schema)));
 
     println!("📝 Writing poem!");
-    println!("🏀 Playground at http://localhost:8000.");
+    println!("🛝 Playground at http://localhost:8000.");
     Server::new(TcpListener::bind("0.0.0.0:8000"))
         .run(app)
         .await

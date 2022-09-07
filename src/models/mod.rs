@@ -33,10 +33,8 @@ impl MutationRoot {
     async fn add_author<'a>(&self, ctx: &Context<'a>, name: String) -> Result<Author, Error> {
         let connection = &mut ctx.data::<Database>()?.pool.get()?;
 
-        let author = AuthorInput { name };
-
         Ok(diesel::insert_into(authorsTable)
-            .values(&author)
+            .values(AuthorInput { name })
             .get_result::<Author>(connection)?)
     }
 }
